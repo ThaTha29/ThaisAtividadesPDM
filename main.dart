@@ -1,65 +1,102 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-main(){
-runApp(AtThais());
+import './questao.dart';
+import './resposta.dart';
+
+main() {
+  runApp(AulaComponentes());
 }
 
-class AtThais extends StatefulWidget{ 
-
-@override
-State<AtThais> createState() => _AtThaisState();
-
-}
-class _AtThaisState extends State<AtThais> {
-
-
-
-var contad = 0;
-
-final pergunt = [
-"Sua loja favorita?",  
-"Sua música favorita?",
-"Sua festa da região favorita?", 
-"Sua marca de roupa favorita?" 
-];
-
-void clicou() {
-//contad ++;
-setState((){                 
-contad: contad++;
-
-});
-print(contad);
+void runApp(AulaComponentes aulaComponentes) {
 }
 
-Widget build(BuildContext context){
-return MaterialApp(
-home: Scaffold(
-appBar: AppBar(
-title: Text("meu primeiro aplicativo em flutter"),
-),
-body: Column(
-children:  [
-Text(perguntas[contad]),
-ElevatedButton(
-onPressed: clicou,
-child: Text('Clique aqui')
-),  //ElevatedButton(
+class AulaComponentes extends StatefulWidget{
+  @override
+  State<AulaComponentes> createState() => _AulaComponentesState();
+}
+
+class State {
+}
+
+class StatefulWidget {
+}
 
 
-ElevatedButton(
-onPressed: () {
-print("funcao 2");
-},
-child: Text('clique neste local') 
-), 
-ElevatedButton(
-onPressed : () => print("Função arrow"),
-child: Text('clique aqui neste local')
-),
-],
-),
-),
-);
+
+class _AulaComponentesState extends State<AulaComponentes> {
+
+  var perguntaAtual = 0;
+  var cor = Colors.white;
+
+  //aqui é a aula de hoje trocar a lista de strings por uma lista de MAP
+
+  // final perguntas = [
+  //   "Qual a sua cor favorita?",
+  //   "Qual o seu animal favorito?",
+  // ];
+
+  final List<Map<String, Object>> perguntas = [
+    {
+      "texto" : "Qual a sua cor favorita?",
+      "respostas" : ["aMARELO","Preto", "Branco", "Azul", "Vermelho"]
+    },
+    {
+      "texto" : "Qual é seu animal favorito?",
+      "respostas" : ["Cachorro", "Gato", "Tartaruga", "Periquito"]
+    },
+    {
+      "texto" : "Qual sua linguagem favorita?",
+      "respostas" : ["Python", "Java", "JavaScript"]
+    },
+    {
+      "texto" : "Qual sua idade?",
+      "respostas" : ["18", "19", "20"]
+    },
+    {
+      "texo": "Qual seu nome?"
+      "respostas" : ["maria", "joão"]
+    },
+    {
+      "texto" : "De qual estado você é?",
+      "respostas" : ["MG","SP","GO"]
+    }
+
+  ];
+  
+  void acao(){
+    setState(() {
+      perguntaAtual++;
+    });
+    print(perguntaAtual);
+  }
+
+  Widget build(BuildContext context){
+
+    List<Widget> respostas = [];
+    //primeiro montar esse for
+    for (var resposta in perguntas[perguntaAtual].cast()["respostas"]) {
+      print(resposta);
+      respostas.add(
+          Resposta(resposta, acao)
+        );
+    }
+    var column3 = Column(
+          children: [
+            ...respostas,
+          ],
+        );
+    var column2 = column3;
+    var column = column2;
+    var appBar2 = AppBar(
+          title: Questao(perguntas[perguntaAtual]["texto"].toString()),
+        );
+    return MaterialApp(
+      home: Scaffold(
+        appBar: appBar2, //AppBar 
+        body: column,
+      )
+    );
+  }
 }
-}
+
+
