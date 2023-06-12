@@ -1,13 +1,9 @@
-import "package:flutter/material.dart";
-
-import './questao.dart';
+import 'package:flutter/material.dart';
+import './questão.dart';
 import './resposta.dart';
 
 main() {
   runApp(AulaComponentes());
-}
-
-void runApp(AulaComponentes aulaComponentes) {
 }
 
 class AulaComponentes extends StatefulWidget{
@@ -15,88 +11,60 @@ class AulaComponentes extends StatefulWidget{
   State<AulaComponentes> createState() => _AulaComponentesState();
 }
 
-class State {
-}
-
-class StatefulWidget {
-}
-
-
-
 class _AulaComponentesState extends State<AulaComponentes> {
 
   var perguntaAtual = 0;
   var cor = Colors.white;
 
-  //aqui é a aula de hoje trocar a lista de strings por uma lista de MAP
-
-  // final perguntas = [
-  //   "Qual a sua cor favorita?",
-  //   "Qual o seu animal favorito?",
-  // ];
-
-  final List<Map<String, Object>> perguntas = [
+  final List<Map<String, Object>> questionario = [
     {
-      "texto" : "Qual a sua cor favorita?",
-      "respostas" : ["aMARELO","Preto", "Branco", "Azul", "Vermelho"]
+      "pergunta": "Qual a sua cor favorita?",
+      "respostas": ["Amarelo", "Preto", "Branco", "Azul", "Vermelho"]
     },
     {
-      "texto" : "Qual é seu animal favorito?",
-      "respostas" : ["Cachorro", "Gato", "Tartaruga", "Periquito"]
+      "pergunta": "Qual é seu animal favorito?",
+      "respostas": ["Cachorro", "Gato", "Tartaruga", "Periquito"]
     },
     {
-      "texto" : "Qual sua linguagem favorita?",
-      "respostas" : ["Python", "Java", "JavaScript"]
+      "pergunta": "Qual sua linguagem favorita?",
+      "respostas": ["Python", "Java", "JavaScript"]
     },
-    {
-      "texto" : "Qual sua idade?",
-      "respostas" : ["18", "19", "20"]
-    },
-    {
-      "texo": "Qual seu nome?"
-      "respostas" : ["maria", "joão"]
-    },
-    {
-      "texto" : "De qual estado você é?",
-      "respostas" : ["MG","SP","GO"]
-    }
-
   ];
+
+  bool get temPergunta {
+    return perguntaAtual < questionario.length;
+  }
   
-  void acao(){
+  void acao() {
     setState(() {
       perguntaAtual++;
     });
     print(perguntaAtual);
   }
 
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
 
     List<Widget> respostas = [];
-    //primeiro montar esse for
-    for (var resposta in perguntas[perguntaAtual].cast()["respostas"]) {
-      print(resposta);
-      respostas.add(
-          Resposta(resposta, acao)
+
+    if (temPergunta) {
+      for (var resposta in questionario[perguntaAtual]["respostas"] as List<String>) {
+        respostas.add(
+          Resposta(resposta, acao),
         );
+      }
     }
-    var column3 = Column(
+    
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: temPergunta ? questão(questionario[perguntaAtual]["pergunta"].toString()) : questão("Terminou"),
+        ),
+        body: temPergunta ? Column(
           children: [
             ...respostas,
           ],
-        );
-    var column2 = column3;
-    var column = column2;
-    var appBar2 = AppBar(
-          title: Questao(perguntas[perguntaAtual]["texto"].toString()),
-        );
-    return MaterialApp(
-      home: Scaffold(
-        appBar: appBar2, //AppBar 
-        body: column,
-      )
+        ) : Text("Resultado"),
+      ),
     );
   }
 }
-
-
