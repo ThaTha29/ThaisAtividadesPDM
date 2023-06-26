@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './questão.dart';
+
+import './questao.dart';
 import './resposta.dart';
 
 main() {
@@ -16,55 +17,73 @@ class _AulaComponentesState extends State<AulaComponentes> {
   var perguntaAtual = 0;
   var cor = Colors.white;
 
-  final List<Map<String, Object>> questionario = [
+  //aqui é a aula de hoje trocar a lista de strings por uma lista de MAP
+
+  // final perguntas = [
+  //   "Qual a sua cor favorita?",
+  //   "Qual o seu animal favorito?",
+  // ];
+
+  final List<Map<String, Object>> perguntas = [
     {
-      "pergunta": "Qual a sua cor favorita?",
-      "respostas": ["Amarelo", "Preto", "Branco", "Azul", "Vermelho"]
+      "texto" : "qual a sua cor favorita?",
+      "respostas" : ["amarelo","preto", "branco", "azul", "vermelho", "rosa"]
     },
     {
-      "pergunta": "Qual é seu animal favorito?",
-      "respostas": ["Cachorro", "Gato", "Tartaruga", "Periquito"]
+      "texto" : "qual é seu animal favorito?",
+      "respostas" : ["cachorro", "gato", "tartaruga", "periquito"]
     },
     {
-      "pergunta": "Qual sua linguagem favorita?",
-      "respostas": ["Python", "Java", "JavaScript"]
+      "texto" : "qual sua linguagem favorita?",
+      "respostas" : ["python", "java", "javaScript"]
     },
+    {
+      "texto" : "qual sua idade?",
+      "respostas" : ["18", "19", "20"]
+    },
+    {
+      "texto" : "qual seu estado?",
+      "respostas" : ["SP", "MG", "RJ"]
+    },
+
   ];
 
-  bool get temPergunta {
-    return perguntaAtual < questionario.length;
+  bool get temPergunta{
+    return perguntaAtual < perguntas.length;
   }
   
-  void acao() {
+
+  void acao(){
     setState(() {
       perguntaAtual++;
     });
     print(perguntaAtual);
   }
 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
 
     List<Widget> respostas = [];
-
-    if (temPergunta) {
-      for (var resposta in questionario[perguntaAtual]["respostas"] as List<String>) {
-        respostas.add(
-          Resposta(resposta, acao),
+    //primeiro montar esse for
+    if(temPergunta){
+      for (var resposta in perguntas[perguntaAtual].cast()["respostas"]) {
+      print(resposta);
+      respostas.add(
+          Resposta(resposta, acao)
         );
-      }
+    }
     }
     
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: temPergunta ? questão(questionario[perguntaAtual]["pergunta"].toString()) : questão("Terminou"),
+          title: temPergunta ? Questao(perguntas[perguntaAtual]["texto"].toString()) : Questao("Terminou"),
         ),
         body: temPergunta ? Column(
           children: [
             ...respostas,
           ],
         ) : Text("Resultado"),
-      ),
+      )
     );
   }
 }
